@@ -37,7 +37,7 @@ class CompleteSignupForm extends StatelessWidget {
               ),
               CustomButton(
                   buttonState: ButtonState.idle,
-                  titleButton: 'get My Location',
+                  titleButton: isShowOnly ? 'view on Map' : 'get My Location',
                   onPressed: () async {
                     if (isShowOnly) {
                       openMaps(userData!.latitude!, userData!.longitude!);
