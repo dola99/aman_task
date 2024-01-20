@@ -3,21 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test_app/Model/user_data.dart';
 import 'package:test_app/core/constant.dart';
-import 'package:test_app/core/routing.dart';
 import 'package:test_app/features/register/cubit/register_cubit.dart';
 import 'package:test_app/widgets/custom_button.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CompleteSignupForm extends StatefulWidget {
+class CompleteSignupForm extends StatelessWidget {
   final bool isShowOnly;
   final UserData? userData;
-  const CompleteSignupForm({super.key, this.userData, this.isShowOnly = false});
+  CompleteSignupForm({super.key, this.userData, this.isShowOnly = false});
 
-  @override
-  State<CompleteSignupForm> createState() => _CompleteSignupFormState();
-}
-
-class _CompleteSignupFormState extends State<CompleteSignupForm> {
   final TextEditingController birthDayController = TextEditingController();
   final _secondformKey = GlobalKey<FormState>();
 
@@ -27,10 +22,9 @@ class _CompleteSignupFormState extends State<CompleteSignupForm> {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal:
-              widget.isShowOnly ? 0 : AppContentPadding.horizontalPadding),
+          horizontal: isShowOnly ? 0 : AppContentPadding.horizontalPadding),
       child: SingleChildScrollView(
-        physics: widget.isShowOnly
+        physics: isShowOnly
             ? const NeverScrollableScrollPhysics()
             : const BouncingScrollPhysics(),
         child: Form(
@@ -45,12 +39,16 @@ class _CompleteSignupFormState extends State<CompleteSignupForm> {
                   buttonState: ButtonState.idle,
                   titleButton: 'get My Location',
                   onPressed: () async {
-                    await cubit.getLocation(context);
+                    if (isShowOnly) {
+                      openMaps(userData!.latitude!, userData!.longitude!);
+                    } else {
+                      await cubit.getLocation(context);
+                    }
                   }),
               SizedBox(
                 height: 400.h,
               ),
-              if (!widget.isShowOnly)
+              if (!isShowOnly)
                 BlocConsumer<RegisterCubit, RegisterState>(
                   buildWhen: (previous, current) =>
                       current is RegisterLoading ||
@@ -75,7 +73,6 @@ class _CompleteSignupFormState extends State<CompleteSignupForm> {
                               _secondformKey.currentState!.save();
                               await cubit.register();
                               await Future.delayed(const Duration(seconds: 3));
-                              NavigatorHelper.pop(context);
                             }
                           }),
                     );
@@ -86,5 +83,14 @@ class _CompleteSignupFormState extends State<CompleteSignupForm> {
         ),
       ),
     );
+  }
+
+  void openMaps(double latitude, double longitude) async {
+    String mapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+
+    if (await canLaunch(mapsUrl)) {
+      await launch(mapsUrl);
+    }
   }
 }

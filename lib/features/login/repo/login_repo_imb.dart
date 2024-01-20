@@ -20,7 +20,7 @@ class LoginRepoImb extends LoginRepo {
     if (result == null) {
       return const Left("no user with this username");
     } else {
-      if (result.password != logincredentials['Password']) {
+      if (result.password != logincredentials['password']) {
         return const Left("Wrong Password");
       } else {
         return Right(result);

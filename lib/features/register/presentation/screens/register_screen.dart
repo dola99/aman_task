@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test_app/core/constant.dart';
+import 'package:test_app/core/routing.dart';
 import 'package:test_app/features/register/cubit/register_cubit.dart';
 import 'package:test_app/features/register/presentation/widgets/stepper.dart';
 import 'package:test_app/widgets/custom_appbar.dart';
@@ -42,6 +43,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textColor: AppColors.error_300,
                       color: AppColors.error_50,
                       isSuccess: false);
+                } else if (state is RegisterFailed) {
+                  ShowSnackBar.show(
+                      context: context,
+                      message: state.errorMessage,
+                      textColor: AppColors.error_300,
+                      color: AppColors.error_50,
+                      isSuccess: false);
+                } else if (state is RegisterSuccess) {
+                  NavigatorHelper.pop(context);
                 }
               },
               builder: (context, state) {

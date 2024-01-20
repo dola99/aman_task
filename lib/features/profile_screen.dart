@@ -51,7 +51,7 @@ class UserScreen extends StatelessWidget {
               height: 15.h,
             ),
             SizedBox(
-              height: 260.h,
+              height: 500.h,
               child: MainInformationForm(
                 isShowOnly: true,
                 userData: userData,
@@ -61,7 +61,6 @@ class UserScreen extends StatelessWidget {
               height: 8.h,
             ),
             SizedBox(
-              height: 600.h,
               child: CompleteSignupForm(
                 isShowOnly: true,
                 userData: userData,

@@ -14,6 +14,12 @@ mixin SecondFormMixin on Cubit<RegisterState> {
   Future<void> getLocation(BuildContext context) async {
     var location = await getUserLocation(context);
     if (location != null) {
+      ShowSnackBar.show(
+          context: context,
+          message: 'Location obtained successfully.',
+          textColor: AppColors.bgGrey_900,
+          color: AppColors.primaryColor,
+          isSuccess: true);
       secondRegisterForm.latLng = LatLng(location.latitude, location.longitude);
     }
   }
@@ -41,12 +47,7 @@ mixin SecondFormMixin on Cubit<RegisterState> {
 
       if (permissionStatus == PermissionStatus.granted) {
         // ignore: use_build_context_synchronously
-        ShowSnackBar.show(
-            context: context,
-            message: 'Location obtained successfully.',
-            textColor: AppColors.bgGrey_900,
-            color: AppColors.primaryColor,
-            isSuccess: true);
+
         return await Geolocator.getCurrentPosition();
       } else {
         // Handle case where location permission is denied

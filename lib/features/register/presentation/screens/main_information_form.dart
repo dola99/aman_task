@@ -219,9 +219,12 @@ class MainInformationForm extends StatelessWidget {
                 DropdownMenuItem(value: 'Male', child: Text('Male')),
                 DropdownMenuItem(value: 'Female', child: Text('Female')),
               ],
-              onChanged: (value) {
-                cubit.selectGender(value!);
-              },
+              value: isShowOnly ? userData!.gender : null,
+              onChanged: isShowOnly
+                  ? null
+                  : (value) {
+                      cubit.selectGender(value!);
+                    },
               validator: (va) {
                 if (va == null || va.isEmpty) {
                   return 'This Field is Required';

@@ -15,10 +15,7 @@ class RegisterCubit extends Cubit<RegisterState>
   RegisterCubit({required RegisterRepo registerRepo})
       : _registerRepo = registerRepo,
         super(RegisterInitial());
-  final List<Widget> forms = [
-    MainInformationForm(),
-    const CompleteSignupForm()
-  ];
+  final List<Widget> forms = [MainInformationForm(), CompleteSignupForm()];
   late PageController pageController;
   late RegisterModel registerModel;
 
